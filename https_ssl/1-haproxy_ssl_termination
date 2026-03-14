@@ -5,6 +5,8 @@ global
     group haproxy
     daemon
     tune.ssl.default-dh-param 2048
+    ssl-default-bind-options no-sslv3
+    ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:RSA+AESGCM:RSA+AES:!aNULL:!MD5:!DSS
 
 defaults
     log global
@@ -21,8 +23,6 @@ frontend http_front
 
 frontend https_front
     bind *:443 ssl crt /etc/ssl/private/www.mskanogo.tech.pem
-    http-request set-header X-Forwarded-Proto https
-    acl host_www hdr(host) -i www.mskanogo.tech
     default_backend http_back
 
 backend http_back
